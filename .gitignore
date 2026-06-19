@@ -1,0 +1,8 @@
+# generated at install time
+*.resolved.yml
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*~
+*.swp
