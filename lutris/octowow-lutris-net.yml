@@ -1,0 +1,79 @@
+# OctoWoW — lutris.net hosted installer (DRAFT)
+# ===========================================================================
+# This is the installer that makes the "+ -> search 'OctoWoW' -> Install" flow
+# work in Lutris (like Phantasy Star Online BB). Unlike the LOCAL script
+# (octowow-bazzite.yml), the user starts with NOTHING, so this installer
+# downloads the client itself via the OctoUpdater.
+#
+# HOW TO SUBMIT (after the clean-room test confirms the download works):
+#   1. Create an account on https://lutris.net
+#   2. Games -> submit "OctoWoW" (if not present) -> add an installer
+#   3. Paste the `script:` section below into the installer editor
+#      (name / game_slug / version / slug / runner go into the web form fields)
+#   4. Upload the artwork (artwork/lutris/*) as the game's banner/cover/icon
+#   5. Submit for moderation
+#
+# ⚠️ BEFORE SUBMITTING, replace the `fetch` URL below with the real raw URL of
+#    lutris/fetch-client.sh once this repo is public, e.g.:
+#    https://raw.githubusercontent.com/pyrahead-stack/octowow-bazzite/main/lutris/fetch-client.sh
+#
+# ⚠️ THINGS THE TEST MUST CONFIRM (may need tweaking afterwards):
+#   - OctoUpdater headless menu sequence (3 / 3 / y / 4) really downloads everything
+#   - the downloaded client launches via VanillaFixes.exe with Lutris DXVK (dxvk:true);
+#     if OctoUpdater does NOT include VanillaFixes.exe, switch `exe` to $GAMEDIR/WoW.exe
+#   - removing d3d9.dll/dxgi.dll (in fetch-client.sh) is the right call for DXVK
+#
+# NOTE: AIO setup + HD patches stay manual (forum/Discord attachments, no stable
+#       URL) — the base game is fully playable without them.
+# ===========================================================================
+
+name: OctoWoW
+game_slug: octowow
+version: Auto-install (OctoUpdater)
+slug: octowow-auto-octoupdater
+runner: wine
+
+script:
+  files:
+    - updater: https://raw.githubusercontent.com/OctoScripting/OctoUpdater/main/updater.py
+    # TODO: replace with the real raw URL once the repo is public
+    - fetch: https://raw.githubusercontent.com/pyrahead-stack/octowow-bazzite/main/lutris/fetch-client.sh
+
+  game:
+    exe: $GAMEDIR/VanillaFixes.exe      # fallback if absent: $GAMEDIR/WoW.exe
+    prefix: $GAMEDIR/../octowow-prefix  # NEXT TO the game folder, never inside it (-> #132)
+    arch: win32
+    working_dir: $GAMEDIR
+
+  wine:
+    dxvk: true         # Lutris provides DXVK d3d9 (fetch-client.sh removes any bundled one)
+    esync: true
+    fsync: true
+
+  system:
+    env:
+      WINEDLLOVERRIDES: mscoree=;mshtml=
+      mesa_glthread: 'true'
+
+  installer:
+    # 1) 32-bit Wine prefix as a SIBLING of the game folder
+    - task:
+        name: create_prefix
+        arch: win32
+        prefix: $GAMEDIR/../octowow-prefix
+
+    # 2) Download the complete client via OctoUpdater (headless)
+    - execute:
+        command: bash
+        args: $fetch
+        disable_runtime: true        # use system python3/sed/bash
+        env:
+          OCTO_GAMEDIR: $GAMEDIR
+          OCTO_UPDATER: $updater
+
+    # 3) Realmlist (Launcher normally writes this; we do it ourselves)
+    - write_file:
+        file: $GAMEDIR/realmlist.wtf
+        content: |
+          set realmlist 185.165.170.6
+          set patchlist 185.165.170.6
