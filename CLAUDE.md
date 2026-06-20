@@ -160,6 +160,30 @@ fresh from a `git clone` of the public repo. Findings + fixes already pushed:
   (vanilla path). The launcher's folder picker (right pane → X:\Games\octowow) and Apply-vs-Install were
   the only mild friction — already documented in the README.
 
+## lutris.net hosted-installer validation (2026-06-20, IN PROGRESS — one blocker found)
+
+Goal: validate `appendix/fetch-client.sh` + `octowow-lutris-net.yml` (the lutris.net "search & install"
+path = OctoUpdater headless download, no GUI launcher). Ran the real flow in a scratch dir on the author's
+PC (`~/octowow-lntest/`, kept for resuming, 9.5 GB).
+- **fetch-client.sh works through the LOGIN SCREEN.** OctoUpdater full download = 9.3 GB (matches the
+  launcher client). The raw-exe swap fixed the corruption (the OctoUpdater-patched `WoW.exe` = 4 907 050 B
+  corrupt, backed up; raw `1707f3b1…` 4 907 008 B LAA-on in place). VanillaFixes from
+  `hannesmann/vanillafixes` v1.5.3 (`-dxvk.zip`) — `VanillaFixes.exe`/`VfPatcher.dll` byte-identical to
+  OctoWoW's. Launched via wine-ge-8-26, win32 sibling prefix, `d3d9=n,b` → DXVK swapchain, login, 0 crashes.
+- **BLOCKER — VanillaHelpers.dll is REQUIRED for world entry.** With the upstream VanillaFixes `dlls.txt`
+  (injects nothing), login works but **entering the world HANGS at "Applying"** (author confirmed). OctoWoW
+  needs its injected `VanillaHelpers.dll`. So the lutris.net installer MUST ship it + `dlls.txt=VanillaHelpers.dll`.
+- **NOT yet confirmed:** that adding VanillaHelpers fixes the hang. The scratch client already has it copied
+  in (from `~/Spiele/OctoWoW/VanillaHelpers.dll`, 254 976 B, SHA1 `d5871cf7b1e195b6b778c87ebb6a4bf437aafc7e`)
+  and `dlls.txt` set to `VanillaHelpers.dll` (original kept as `dlls.txt.github.bak`); it reached the login
+  screen but the author ended the session before testing world entry. **Resume:** launch the scratch client
+  (`~/octowow-lntest/octowow`, sibling prefix `~/octowow-lntest/octowow-prefix`, wine-ge VanillaFixes.exe,
+  d3d9=n,b) → log in → confirm the world loads now.
+- **Then:** find a STABLE source for VanillaHelpers.dll (is it `isfir/VanillaHelpers` on GitHub, or an
+  OctoWoW-custom build? — match SHA1 d5871cf7…). If none, the hosted installer can't fetch it = real blocker.
+  Also OctoUpdater's menu changed (option 3 = full download directly; the `3\n3\ny\n4` sequence still works).
+- After that: clean up `~/octowow-lntest`, finalize fetch-client.sh (add VanillaHelpers fetch), then submit.
+
 ## Handoff — resuming on the author's own PC (transferred via Warpinator 2026-06-20)
 
 This repo was last worked on the girlfriend's PC (Shari-PC) and copied to the author's
