@@ -9,6 +9,9 @@
 # PLAY button to play. (HD users play via Lutris instead — see the README.)
 set -euo pipefail
 
+# On non-Bazzite distros umu-run lives in ~/.local/bin; make sure it's on PATH.
+export PATH="$HOME/.local/bin:$PATH"
+
 PKG="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"   # this scripts/ folder
 GAMES="$HOME/Games"
 GAMEDIR="$GAMES/octowow"

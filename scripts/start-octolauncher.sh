@@ -15,6 +15,10 @@
 # run this again — the runtime is cached and UMU-Proton downloads on the retry.
 set -euo pipefail
 
+# Desktop-icon launches don't source ~/.bashrc, so add the usual user bin dir
+# (where the umu-launcher zipapp lives on non-Bazzite distros) to PATH.
+export PATH="$HOME/.local/bin:$PATH"
+
 APPBASE="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"
 export WINEPREFIX="$APPBASE/prefix"
 export GAMEID="${GAMEID:-0}"
