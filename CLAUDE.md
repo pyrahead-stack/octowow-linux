@@ -130,7 +130,12 @@ folder). The launcher's own prefix is **`~/Games/octowow-launcher/prefix`**.
   crash is gone here; no launcher Install/Verify was needed. (Prefix sits INSIDE the game folder here and
   works fine — the recursion #132 only bites with a `pfx -> .` symlink loop, not a plain prefix dir.)
 
-## Clean-room test on a fresh Linux Mint laptop (2026-06-20, in progress)
+## Clean-room test on a fresh Linux Mint laptop (2026-06-20, ✅ PASSED end-to-end)
+
+**RESULT: the README alone took a stranger from nothing → in-world on a fresh non-Bazzite machine.**
+Client downloaded (9.3 GB), launcher's **PLAY** → login → in-game confirmed by the author. The guide is
+now clean-room-proven cross-distro (Mint 22.3 / AMD RADV), which unblocks the lutris.net submission.
+
 
 First truly-clean, non-Bazzite test — laptop `janosch@Minty`, **Linux Mint 22.3**, kernel 6.17,
 **AMD Renoir APU / RADV** (Vulkan 1.4 fine), reached via SSH (driven by the author's PC). Installed
@@ -149,10 +154,11 @@ fresh from a `git clone` of the public repo. Findings + fixes already pushed:
 - **Not a guide bug (SSH artifact):** running the GUI install over SSH needs `DISPLAY=:0` +
   `XAUTHORITY=~/.Xauthority` stolen from the active session (tty7). A normal user runs setup in their
   own graphical terminal, which already has a display. Detached procs survive (active GUI session present).
-- **State:** Phase 1 done on the laptop — OctoLauncher installed (UMU-Proton-10.0-4), desktop entry made,
-  launcher GUI open (Electron `CrBrowserMain` running). Author now driving the launcher GUI: set folder
-  `~/Games/octowow`, enable vanillaFixes+largeAddress+Apply, Install/Verify (~10 GB client download), then PLAY.
-  **Next:** confirm PLAY → login → world on Mint; then the guide is clean-room-proven for lutris.net.
+- **Full path that worked on Mint:** install umu zipapp → `git clone` repo → `setup-launcher.sh` (umu
+  pulls UMU-Proton + runtime, installs the launcher) → open launcher → set folder `~/Games/octowow` →
+  vanillaFixes+largeAddress+Apply → Install/Verify (9.3 GB) → **PLAY → login → in-world.** No Lutris needed
+  (vanilla path). The launcher's folder picker (right pane → X:\Games\octowow) and Apply-vs-Install were
+  the only mild friction — already documented in the README.
 
 ## Handoff — resuming on the author's own PC (transferred via Warpinator 2026-06-20)
 
