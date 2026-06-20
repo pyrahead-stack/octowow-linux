@@ -24,11 +24,11 @@ The official **OctoLauncher** downloads the client, applies the tweaks, and **ru
 | Need | How |
 |---|---|
 | **umu-launcher** | Runs the launcher **and its PLAY**. Preinstalled on Bazzite. Not on Bazzite? See below. |
-| **GE-Proton** | Used to run the launcher. If you don't already have one, `setup-launcher.sh` makes umu download GE-Proton automatically (~400 MB, first run only) — nothing to do. |
+| **Proton** | The launcher runs under Proton. `setup-launcher.sh` lets umu download **UMU-Proton** + the Steam runtime automatically on the first run (a few hundred MB) — nothing to do. If that first run errors once with *"UMU-Proton not found"*, just run it again (it's cached). |
 | **Lutris + wine-ge** *(HD path only)* | Only if you use the HD patches. Lutris is preinstalled on Bazzite (else `flatpak install -y flathub net.lutris.Lutris`); then Lutris → **Runners → Wine** → install a **wine-ge-8** build. **Not** Proton — Proton can't run WoW's 32-bit prefix. |
 | `kdialog` or `zenity` *(HD/Lutris only)* | For the Play/Launcher chooser menu. Preinstalled on KDE (kdialog); on Mint/Ubuntu `sudo apt install zenity`. |
 
-> **Not on Bazzite? (Linux Mint, Ubuntu, other)** — These don't ship `umu-run`. The **vanilla play path needs only umu-launcher** (everything else, incl. GE-Proton, is downloaded by the scripts):
+> **Not on Bazzite? (Linux Mint, Ubuntu, other)** — These don't ship `umu-run`. The **vanilla play path needs only umu-launcher** (Proton + the Steam runtime are downloaded by the scripts on first run):
 > 1. Install the **`umu-launcher` zipapp** (the tarball extracts to `umu/umu-run` — you only need that one file in `~/.local/bin/`):
 >    ```bash
 >    mkdir -p ~/.local/bin && cd /tmp

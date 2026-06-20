@@ -32,14 +32,17 @@ if [ -f "$LAUNCHER_EXE" ]; then
 else
   echo "==> Downloading OctoLauncher installer"
   curl -L --fail https://octowow.st/download/launcher -o "$LDIR/OctoLauncher_Installer.exe"
-  echo "==> Installing OctoLauncher silently (this can take a minute)"
-  # umu needs a Proton. Prefer an installed GE-Proton; otherwise PROTONPATH=GE-Proton
-  # tells umu to download the latest GE-Proton itself (~400 MB, first run only).
-  # (umu's bare auto-fetch with PROTONPATH empty is unreliable — fails on fresh Mint.)
-  PROTON="$(ls -d "$HOME/.local/share/Steam/compatibilitytools.d/GE-Proton"* \
-            "$HOME/.steam/steam/compatibilitytools.d/GE-Proton"* 2>/dev/null | head -1)"
-  GAMEID=0 PROTONPATH="${PROTON:-GE-Proton}" WINEPREFIX="$LDIR/prefix" \
-    "$UMU" "$LDIR/OctoLauncher_Installer.exe" /S || true
+  echo "==> Installing OctoLauncher silently (first run downloads UMU-Proton + the Steam runtime)"
+  # PROTONPATH is left UNSET so umu uses UMU-Proton, which WAITS for the installer
+  # to finish. (A forced GE-Proton makes umu's pressure-vessel container return
+  # early and the install gets killed half-done — proven on a fresh Linux Mint.)
+  # If the very first run errors with "UMU-Proton not found" (a transient download
+  # hiccup), just re-run this script — the runtime is cached and UMU-Proton
+  # downloads on the retry.
+  GAMEID=0 WINEPREFIX="$LDIR/prefix" "$UMU" "$LDIR/OctoLauncher_Installer.exe" /S || true
+  # Some umu/Proton builds return before the silent installer has finished writing
+  # files; wait for the launcher exe to actually appear (up to ~3 min) before moving on.
+  for _ in $(seq 1 36); do [ -f "$LAUNCHER_EXE" ] && break; sleep 5; done
   [ -f "$LAUNCHER_EXE" ] || { echo "Install did not produce OctoLauncher.exe — run the installer manually." >&2; exit 1; }
 fi
 
