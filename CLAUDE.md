@@ -21,9 +21,12 @@ the repo so work can resume on any machine.
 3. **Lutris is the OLD/fallback path** (built only as a workaround for the non-existent PLAY
    bug): `octowow.yml` is `runner: linux` → `octowow-chooser.sh` → `play-octowow.sh` launches
    **VanillaFixes.exe** under **wine-ge** in a 32-bit prefix with DXVK. Still works, but the
-   launcher-PLAY path is simpler. **Open: decide whether to demote Lutris to optional and make
-   PLAY-in-launcher the primary documented path** (would drop the chooser/play-script apparatus
-   from the critical flow).
+   launcher-PLAY path is simpler. **DECIDED 2026-06-20 (author): launcher-PLAY is the PRIMARY
+   documented path; Lutris is demoted to the HD-only path.** Rationale: PLAY works for vanilla,
+   but the launcher rewrites `patch-A` on every update → clobbers HD → HD users must play via
+   Lutris (never opens the launcher). No workaround beyond that caveat (renaming HD patches
+   crashes). README restructured to match (Phase 2 = press PLAY; "Play via Lutris (required for HD)"
+   is its own section).
 
 Everything lives in **`~/Games/octowow`** (Lutris's default — never use a different path).
 The Lutris-path prefix is **`~/Games/octowow-prefix`** (sibling of, not inside, the game
@@ -116,8 +119,12 @@ folder). The launcher's own prefix is **`~/Games/octowow-launcher/prefix`**.
   Lutris entry was first hand-built, then the script written to match — script not yet run fresh);
   re-test the whole flow on a truly clean machine (this run reused existing data).
 - The author's own PC has a reference install at `~/Spiele/OctoWoW` (19 GB) + `~/Spiele/OctoLauncher`
-  — do not wipe it. NOTE its WoW.exe likely came via headless OctoUpdater (corrupt) — that, not
-  the PLAY button, is why PLAY "failed" there; a launcher Install/Verify would fix it.
+  — do not wipe it. **VERIFIED WORKING 2026-06-20:** its `WoW.exe` is already a CLEAN LAA exe
+  (4 907 008 B, LAA on; the corrupt headless one is safely kept as `WoW.exe.octopatched.bak`,
+  4 907 050 B). Launched via the in-folder `play-octowow.sh` (wine-ge-8-26, prefix `~/Spiele/OctoWoW/prefix`,
+  `d3d9=n,b`) → DXVK swapchain 2560×1440, login screen, **author confirmed in-world**. So the corrupt-exe
+  crash is gone here; no launcher Install/Verify was needed. (Prefix sits INSIDE the game folder here and
+  works fine — the recursion #132 only bites with a `pfx -> .` symlink loop, not a plain prefix dir.)
 
 ## Handoff — resuming on the author's own PC (transferred via Warpinator 2026-06-20)
 
