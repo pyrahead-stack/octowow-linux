@@ -27,13 +27,15 @@ find_proton() {
   done
   return 1
 }
-# Prefer a GE-Proton if one is installed; otherwise leave PROTONPATH unset so umu
-# fetches its own UMU-Proton, which runs the launcher fine (proven in testing).
-# This is what lets a fresh non-Steam machine (e.g. Linux Mint) work with just umu.
+# Prefer a GE-Proton if one is installed; otherwise set PROTONPATH=GE-Proton, the
+# umu keyword that makes umu download the latest GE-Proton itself (~400 MB, first
+# run only). This is what lets a fresh non-Steam machine (e.g. Linux Mint) work
+# with just umu installed. (umu's bare auto-fetch with PROTONPATH empty is NOT
+# reliable — on a fresh Mint it failed with "UMU-Proton not found".)
 export PROTONPATH="${PROTONPATH:-$(find_proton || true)}"
 if [ -z "${PROTONPATH:-}" ]; then
-  echo "No GE-Proton found — letting umu fetch its own UMU-Proton (first run may take a minute)." >&2
-  unset PROTONPATH
+  echo "No local GE-Proton — using PROTONPATH=GE-Proton so umu downloads it (first run pulls ~400 MB)." >&2
+  export PROTONPATH=GE-Proton
 fi
 
 LAUNCHER="$WINEPREFIX/drive_c/users/steamuser/AppData/Local/Programs/OctoLauncher/OctoLauncher.exe"

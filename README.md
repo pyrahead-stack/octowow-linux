@@ -24,17 +24,34 @@ The official **OctoLauncher** downloads the client, applies the tweaks, and **ru
 | Need | How |
 |---|---|
 | **umu-launcher** | Runs the launcher **and its PLAY**. Preinstalled on Bazzite. Not on Bazzite? See below. |
-| **GE-Proton** *(optional)* | Only if you have it (e.g. via Steam/ProtonUp-Qt) — otherwise umu fetches its own UMU-Proton on first run, which works fine. |
+| **GE-Proton** | Used to run the launcher. If you don't already have one, `setup-launcher.sh` makes umu download GE-Proton automatically (~400 MB, first run only) — nothing to do. |
 | **Lutris + wine-ge** *(HD path only)* | Only if you use the HD patches. Lutris is preinstalled on Bazzite (else `flatpak install -y flathub net.lutris.Lutris`); then Lutris → **Runners → Wine** → install a **wine-ge-8** build. **Not** Proton — Proton can't run WoW's 32-bit prefix. |
 | `kdialog` or `zenity` *(HD/Lutris only)* | For the Play/Launcher chooser menu. Preinstalled on KDE (kdialog); on Mint/Ubuntu `sudo apt install zenity`. |
 
-> **Not on Bazzite? (Linux Mint, Ubuntu, other)** — These don't ship `umu-run`. The **vanilla play path needs only umu-launcher**:
-> 1. Grab the **`umu-launcher` zipapp** from its [GitHub releases](https://github.com/Open-Wine-Components/umu-launcher/releases), extract `umu-run` to `~/.local/bin/`, `chmod +x` it. Make sure `~/.local/bin` is on your `PATH` (log out/in, or `export PATH="$HOME/.local/bin:$PATH"`).
-> 2. That's it for vanilla — umu fetches its own Proton on first run. **For HD only:** also install **Lutris** (`flatpak install -y flathub net.lutris.Lutris`) and a **wine-ge-8** build (via **ProtonUp-Qt**: `flatpak install -y flathub net.davidotek.pupgui2`). (Enable Flathub first if needed: `flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo`.)
+> **Not on Bazzite? (Linux Mint, Ubuntu, other)** — These don't ship `umu-run`. The **vanilla play path needs only umu-launcher** (everything else, incl. GE-Proton, is downloaded by the scripts):
+> 1. Install the **`umu-launcher` zipapp** (the tarball extracts to `umu/umu-run` — you only need that one file in `~/.local/bin/`):
+>    ```bash
+>    mkdir -p ~/.local/bin && cd /tmp
+>    URL=$(curl -s https://api.github.com/repos/Open-Wine-Components/umu-launcher/releases/latest \
+>          | grep -o 'https://[^"]*zipapp\.tar')
+>    curl -L -o umu.tar "$URL"
+>    tar -xf umu.tar && cp umu/umu-run ~/.local/bin/ && chmod +x ~/.local/bin/umu-run
+>    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc && export PATH="$HOME/.local/bin:$PATH"
+>    command -v umu-run && echo "umu-run OK"
+>    ```
+> 2. That's it for vanilla. **For HD only:** also install **Lutris** (`flatpak install -y flathub net.lutris.Lutris`) and a **wine-ge-8** build (via **ProtonUp-Qt**: `flatpak install -y flathub net.davidotek.pupgui2`). (Enable Flathub first if needed: `flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo`.)
 
 ---
 
 ## Install
+
+### Get the package
+
+```bash
+git clone https://github.com/pyrahead-stack/octowow-linux ~/octowow-linux
+```
+
+(No git? Download the ZIP from the GitHub page → **Code ▾ → Download ZIP** → unzip it to `~/octowow-linux`.)
 
 ### Phase 1 — OctoLauncher: download + tweaks
 

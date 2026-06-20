@@ -33,8 +33,13 @@ else
   echo "==> Downloading OctoLauncher installer"
   curl -L --fail https://octowow.st/download/launcher -o "$LDIR/OctoLauncher_Installer.exe"
   echo "==> Installing OctoLauncher silently (this can take a minute)"
-  # PROTONPATH left unset -> umu fetches its own UMU-Proton; GE-Proton is used at runtime if present.
-  GAMEID=0 WINEPREFIX="$LDIR/prefix" "$UMU" "$LDIR/OctoLauncher_Installer.exe" /S || true
+  # umu needs a Proton. Prefer an installed GE-Proton; otherwise PROTONPATH=GE-Proton
+  # tells umu to download the latest GE-Proton itself (~400 MB, first run only).
+  # (umu's bare auto-fetch with PROTONPATH empty is unreliable — fails on fresh Mint.)
+  PROTON="$(ls -d "$HOME/.local/share/Steam/compatibilitytools.d/GE-Proton"* \
+            "$HOME/.steam/steam/compatibilitytools.d/GE-Proton"* 2>/dev/null | head -1)"
+  GAMEID=0 PROTONPATH="${PROTON:-GE-Proton}" WINEPREFIX="$LDIR/prefix" \
+    "$UMU" "$LDIR/OctoLauncher_Installer.exe" /S || true
   [ -f "$LAUNCHER_EXE" ] || { echo "Install did not produce OctoLauncher.exe — run the installer manually." >&2; exit 1; }
 fi
 
