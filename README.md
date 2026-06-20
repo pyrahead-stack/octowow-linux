@@ -12,7 +12,7 @@ The official **OctoLauncher** handles downloads + tweaks; **Lutris** runs the ga
 1. **Install Lutris + the helpers** (once).
 2. **Run `scripts/setup-launcher.sh`** → installs the OctoLauncher.
 3. **Open the OctoLauncher** → point it at `~/Games/octowow`, enable the tweaks you want, **Install/Verify** (downloads the client). *Don't press the launcher's PLAY.*
-4. **Lutris → + → Install from a local install script → `octowow.yml`** → **Play** → pick **🎮 Play OctoWoW**.
+4. **Add to Lutris:** close Lutris, run `scripts/add-to-lutris.sh`, then **Lutris → OctoWoW → Play → 🎮 Play OctoWoW**.
 
 That's it. Details below.
 
@@ -50,10 +50,17 @@ Then:
 
 ### Phase 2 — Lutris: play
 
-1. Lutris → **`+`** → **"Install from a local install script"** → select **`octowow.yml`**.
-2. Keep the suggested location **`~/Games/octowow`** → **Install**.
-   - Lutris may warn *"the folder contains files"* — **that's expected here**, continue.
-3. **Play** → choose **🎮 Play OctoWoW**. (Choose **🔧 OctoLauncher** later to manage patches/addons.)
+1. **Close Lutris** if it's open.
+2. Run the helper:
+   ```bash
+   ~/octowow-bazzite/scripts/add-to-lutris.sh
+   ```
+   It registers **OctoWoW** in Lutris (runner: linux → the Play/Launcher chooser) with absolute paths.
+3. Open **Lutris** → **OctoWoW** → **Play** → choose **🎮 Play OctoWoW**. (Choose **🔧 OctoLauncher** later to manage patches/addons.)
+
+> Why a script and not Lutris's "Install from a local install script"? That GUI flow leaves the
+> game directory unset for a `runner: linux` script, so `$GAMEDIR` isn't substituted and Play
+> fails with *"$GAMEDIR/$GAMEDIR/octowow-chooser.sh not found"*. The helper avoids that.
 
 First login: account name is **uppercase** (e.g. `PYRAHEAD`); the realm list (**C'Thun / N'Zoth**) appears **after** a successful login.
 
@@ -124,7 +131,8 @@ Same flow, with these changes:
 
 | File | Purpose |
 |---|---|
-| `octowow.yml` | Lutris install script (runner: linux → Play/Launcher chooser) |
+| `scripts/add-to-lutris.sh` | registers OctoWoW in Lutris (reliable — use this) |
+| `octowow.yml` | Lutris install script (legacy GUI flow — unreliable, see Phase 2) |
 | `scripts/setup-launcher.sh` | installs the OctoLauncher + play scripts |
 | `scripts/octowow-chooser.sh` | the Play / OctoLauncher menu (Lutris "Play" runs this) |
 | `scripts/play-octowow.sh` | launches the game (VanillaFixes + DXVK, wine-ge) |

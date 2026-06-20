@@ -34,10 +34,10 @@ script:
     working_dir: $GAMEDIR
 
   installer:
-    # Make sure the play scripts are runnable (in case they were copied flat).
-    - execute:
-        command: chmod
-        args: +x $GAMEDIR/octowow-chooser.sh $GAMEDIR/play-octowow.sh
+    # NOTE: the play scripts are already executable (setup-launcher.sh copies them
+    # with +x, and they ship +x in the repo), so no chmod step is needed here. An
+    # earlier `execute: chmod` step was removed — Lutris invoked it without operands
+    # ("chmod: missing operand") and aborted the install.
 
     # The OctoLauncher normally writes this; we set it too, just in case.
     - write_file:

@@ -6,18 +6,28 @@ Goal: an idiot-proof guide + scripts so a Windows-switcher (the author's girlfri
 and the community can install it. This file is the portable memory — it travels with
 the repo so work can resume on any machine.
 
-## The install model (launcher-centric)
+## The install model
 
 1. **OctoLauncher** (official, Electron) downloads the client and applies tweaks
    (vanillaFixes = multicore fix, largeAddress = 4 GB / anti-green-screen, HD). Runs
-   under **umu + GE-Proton**. Its own **PLAY button is broken under Wine** (DLL injection
-   fails → ERROR #132) — never use it to play.
-2. **Lutris** runs the game: `octowow.yml` is `runner: linux` → `octowow-chooser.sh`
-   (a Play / OctoLauncher menu) → `play-octowow.sh` launches **VanillaFixes.exe** under
-   **wine-ge** in a 32-bit prefix with DXVK.
+   under **umu + GE-Proton** (UMU-Proton fetched on first run).
+2. The launcher's **PLAY button WORKS** — proven 2026-06-20 on the girlfriend's Bazzite PC
+   (launcher v1.1.0, UMU-Proton-10.0-4, clean launcher install): pressed PLAY → login →
+   in-world, no errors, walked around. **This overturns the old "PLAY is broken under Wine
+   (#132)" assumption** — that was a *misdiagnosis*. The real blocker was always the
+   **corrupt headless-OctoUpdater `WoW.exe`** (see below): every PC that "couldn't use PLAY"
+   was running that corrupt exe and crashing with `c0000005` *before* the PLAY injection
+   even mattered. Install via the launcher (it writes a clean LAA-patched exe) → PLAY works.
+3. **Lutris is the OLD/fallback path** (built only as a workaround for the non-existent PLAY
+   bug): `octowow.yml` is `runner: linux` → `octowow-chooser.sh` → `play-octowow.sh` launches
+   **VanillaFixes.exe** under **wine-ge** in a 32-bit prefix with DXVK. Still works, but the
+   launcher-PLAY path is simpler. **Open: decide whether to demote Lutris to optional and make
+   PLAY-in-launcher the primary documented path** (would drop the chooser/play-script apparatus
+   from the critical flow).
 
 Everything lives in **`~/Games/octowow`** (Lutris's default — never use a different path).
-Prefix is **`~/Games/octowow-prefix`** (next to, not inside the game folder).
+The Lutris-path prefix is **`~/Games/octowow-prefix`** (sibling of, not inside, the game
+folder). The launcher's own prefix is **`~/Games/octowow-launcher/prefix`**.
 
 ## Hard-won facts (don't relearn these)
 
@@ -33,11 +43,30 @@ Prefix is **`~/Games/octowow-prefix`** (next to, not inside the game folder).
   the **raw server WoW.exe** (`https://octowow.st/client/latest/WoW.exe`, SHA1
   `1707f3b1cf31d24041ebf58406ef6d75b47c1c55`, 4 907 008 bytes) runs. The launcher patches
   WoW.exe correctly (LAA) — another reason the launcher path is preferred over headless.
+  **This corrupt exe — NOT the PLAY button — is the real cause of the crashes once blamed
+  on "launcher PLAY broken under Wine".** Confirmed 2026-06-20: deleting the corrupt exe and
+  letting the launcher restore it (clean `1707f3b…` + LAA=True) made the launcher's PLAY work
+  end-to-end.
 - **DXVK only once.** The modern client ships `d3d9.dll` in the game folder → use it via
   `WINEDLLOVERRIDES=d3d9=n,b`, Lutris DXVK off. Never stack two DXVK layers.
-- **HD patch-A trap:** the launcher overwrites `patch-A.mpq` with OctoWoW's own on every
-  update → the Project Reforged HD patch-A is lost. Rename the HD patch to a free letter,
-  or re-copy it after each official update.
+- **HD patches (Project Reforged, *Turtle* set) — OPTIONAL, kept independent of the core guide.**
+  Uses letters A,B,C,D,E,G,I,L,M,N,P,S,T,U. **Principle (set by the author 2026-06-20): keep the
+  HD patches at their NATIVE letters as Project Reforged prescribes — do NOT rename them, do NOT
+  invent workarounds.** Install all of them with their original names into `Data/`, enable
+  **`vanillaHelpers`** (else only `patch-A` loads; the lettered patches B…Z don't load at all).
+- **The patch-A conflict (and why renaming FAILS):** OctoWoW's own client also uses `patch-A`
+  (~6 MB, char DBC/data). The HD "Characters & NPCs" patch is ALSO `patch-A` (~1.7 GB) and must
+  **replace** OctoWoW's — the two cannot coexist. **Tried & FAILED 2026-06-20: renaming the HD
+  `patch-A`→`patch-F` (keeping OctoWoW's `patch-A`) → crash at the character screen** (OctoWoW's
+  patch-A char data conflicts with the HD char models). An earlier "patch-F works" note was a
+  FALSE POSITIVE (tested with vanillaHelpers OFF, so HD was actually loading from `patch-A`).
+- **Consequence → the Lutris play path is the HD-safe one.** The OctoLauncher rewrites `patch-A`
+  with OctoWoW's own on every update (UPDATE replaces PLAY until you let it), clobbering the HD
+  `patch-A`. **`play-octowow.sh` (the Lutris path) never opens the launcher → the HD `patch-A`
+  survives.** So: HD users play via Lutris; after ever opening the launcher to update OctoWoW,
+  re-copy the HD `patch-A`. (vanillaHelpers is also the DLL that recursively scans the game
+  folder → keep the prefix a SIBLING.) Caveat: Turtle patches on OctoWoW — some custom models
+  may differ; content compatibility is the user's call.
 - **Leave the launcher mod "UnitXP" OFF** (re-injects UnitXP_SP3.dll → crash).
 - English `enUS` is **not** cleanly possible (no enUS locale data → #132 after login).
   Playable state = deDE.
@@ -45,22 +74,49 @@ Prefix is **`~/Games/octowow-prefix`** (next to, not inside the game folder).
 ## Repo layout
 
 - `README.md` — the lean, launcher-centric guide (English, ~/Games/octowow).
-- `octowow.yml` — Lutris install script (runner: linux → chooser).
-- `scripts/` — setup-launcher, octowow-chooser, play-octowow, start-octolauncher.
+- `octowow.yml` — legacy Lutris install script (GUI flow unreliable — use add-to-lutris.sh).
+- `scripts/` — setup-launcher, add-to-lutris, octowow-chooser, play-octowow, start-octolauncher.
 - `appendix/` — bare headless install (raw-exe fix) + lutris.net draft (blocked until repo public).
 - `install-artwork.sh` + `artwork/` — Lutris + Steam art.
 - `TESTING.md` — clean-room checklist for the launcher flow.
 
 ## Status & open items (2026-06-20)
 
-- Package was **redesigned to launcher-centric** after a clean-room test on the author's
-  girlfriend's Bazzite PC exposed: the WoW.exe corruption, the missing wine pin, and a
-  folder mismatch (~/Spiele vs Lutris's ~/Games). All three addressed.
-- **Not yet done:** (a) re-test this new flow from a clean machine; (b) smoke-test the one
-  new piece, `scripts/setup-launcher.sh` (silent OctoLauncher install); (c) git commit +
-  public push (repo target: `pyrahead-stack/octowow-bazzite`); (d) lutris.net submission.
-- The author's own PC has a working reference install at `~/Spiele/OctoWoW` (19 GB) +
-  `~/Spiele/OctoLauncher` — do not wipe it; it's the known-good baseline.
+- **Tested the full flow on the girlfriend's Bazzite PC (Shari-PC) on 2026-06-20.** Started
+  from a leftover broken headless install at `~/Spiele/OctoWoW` (9.3 GB, corrupt exe). Moved
+  it to `~/Games/octowow` (no re-download), removed the corrupt `WoW.exe`, old prefix and stale
+  Lutris entry, ran `setup-launcher.sh` (✅ smoke-test passed — silent install produced a working
+  OctoLauncher.exe), opened the launcher, enabled vanillaFixes + dxvk (MODS) + largeAddress
+  (TWEAKS), Install/Verify restored a clean LAA `WoW.exe` + `d3d9.dll` + `VanillaFixes.exe`.
+  **Then the launcher's PLAY worked end-to-end → in-world.** (so open items a + b: DONE.)
+- **Both play paths now proven on this machine:** (1) launcher PLAY (umu + Proton) works for a
+  plain install; (2) the **Lutris path** (`add-to-lutris.sh` → chooser → `play-octowow.sh` →
+  VanillaFixes under wine-ge, sibling prefix, DXVK) works → in-world. DXVK confirmed active
+  (RX 6800/RADV). **For HD users the Lutris path is the right one** (launcher PLAY forces a
+  `patch-A` update that clobbers HD; the Lutris path never opens the launcher). Author's call
+  (2026-06-20): **keep HD patches at native letters, no renaming hacks** (the patch-F idea was
+  abandoned — it crashes; see HD facts above).
+- **Guide bugs found during this test (fix in README before publishing):**
+  - The OctoLauncher's Wine **folder picker** is confusing: must pick the folder in the
+    **right pane** (not the left tree); expand `/` → `home` → `<user>` → `Games` → `octowow`;
+    the chosen path then shows as a Wine drive letter (e.g. `X:\Games\octowow`) — that's normal.
+  - **Apply vs Install:** mods/tweaks only take effect after pressing **Apply**; **Install**
+    only fetches/verifies client files. Had to press Install + Update (×2) to fully finish.
+  - The **"Update available!" screen appears on every launcher start** and re-writes
+    `patch-A.mpq` (the HD patch-A trap — see HD facts; play via Lutris to avoid it).
+  - **`octowow.yml` GUI install is broken (FIXED via new script):** (1) its `execute: chmod`
+    installer step ran with no operands → install aborted (code 256) — removed from the yml;
+    (2) `runner: linux` + no `files:` section made Lutris leave the game `directory` empty, so
+    `$GAMEDIR` stayed literal and Play failed (`$GAMEDIR/$GAMEDIR/octowow-chooser.sh not found`).
+    **Fix: new `scripts/add-to-lutris.sh`** writes the config + pga.db row directly with absolute
+    paths (Lutris must be closed). README Phase 2 now uses it; `octowow.yml` kept only as legacy.
+- **Still not done:** (c) git commit + public push (repo target: `pyrahead-stack/octowow-bazzite`);
+  (d) lutris.net submission; test `add-to-lutris.sh` itself on a clean machine (on Shari-PC the
+  Lutris entry was first hand-built, then the script written to match — script not yet run fresh);
+  re-test the whole flow on a truly clean machine (this run reused existing data).
+- The author's own PC has a reference install at `~/Spiele/OctoWoW` (19 GB) + `~/Spiele/OctoLauncher`
+  — do not wipe it. NOTE its WoW.exe likely came via headless OctoUpdater (corrupt) — that, not
+  the PLAY button, is why PLAY "failed" there; a launcher Install/Verify would fix it.
 
 ## When `/octowowinstall` is invoked
 
