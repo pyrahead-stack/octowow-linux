@@ -35,7 +35,7 @@ That's it. Details below.
 ### Phase 1 — OctoLauncher: download + tweaks
 
 ```bash
-~/octowow-bazzite/scripts/setup-launcher.sh
+~/octowow-linux/scripts/setup-launcher.sh
 ```
 
 This creates `~/Games/octowow`, drops the play scripts in, installs the OctoLauncher into its own prefix, and adds an **OctoLauncher** desktop icon.
@@ -53,7 +53,7 @@ Then:
 1. **Close Lutris** if it's open.
 2. Run the helper:
    ```bash
-   ~/octowow-bazzite/scripts/add-to-lutris.sh
+   ~/octowow-linux/scripts/add-to-lutris.sh
    ```
    It registers **OctoWoW** in Lutris (runner: linux → the Play/Launcher chooser) with absolute paths.
 3. Open **Lutris** → **OctoWoW** → **Play** → choose **🎮 Play OctoWoW**. (Choose **🔧 OctoLauncher** later to manage patches/addons.)
@@ -87,9 +87,9 @@ Manage HD in the **OctoLauncher** (enable the HD patches there).
 ### Artwork (Lutris + Steam)
 
 ```bash
-~/octowow-bazzite/install-artwork.sh            # Lutris icon/banner/cover (+ Steam if a shortcut exists)
-~/octowow-bazzite/install-artwork.sh --lutris   # Lutris only
-~/octowow-bazzite/install-artwork.sh --steam    # Steam only
+~/octowow-linux/install-artwork.sh            # Lutris icon/banner/cover (+ Steam if a shortcut exists)
+~/octowow-linux/install-artwork.sh --lutris   # Lutris only
+~/octowow-linux/install-artwork.sh --steam    # Steam only
 ```
 
 Restart Lutris afterwards so the images reload. For Steam: create a shortcut first (Lutris right-click → **Create Steam shortcut**), **close Steam**, run `--steam`, reopen Steam.

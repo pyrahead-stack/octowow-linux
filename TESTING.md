@@ -16,7 +16,7 @@ Environment of this run:
 
 ### 0. Start
 - [ ] Fresh machine, no OctoWoW / leftover folders (`~/Games/octowow*`, `~/Spiele/OctoWoW`)
-- [ ] You have the `octowow-bazzite/` package here — how did you get it? ____________________
+- [ ] You have the `octowow-linux/` package here — how did you get it? ____________________
 
 ### 1. Requirements
 - [ ] Lutris present (`command -v lutris` or Flatpak)

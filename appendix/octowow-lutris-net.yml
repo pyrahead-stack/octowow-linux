@@ -15,7 +15,7 @@
 #
 # ⚠️ BEFORE SUBMITTING, replace the `fetch` URL below with the real raw URL of
 #    lutris/fetch-client.sh once this repo is public, e.g.:
-#    https://raw.githubusercontent.com/pyrahead-stack/octowow-bazzite/main/lutris/fetch-client.sh
+#    https://raw.githubusercontent.com/pyrahead-stack/octowow-linux/main/appendix/fetch-client.sh
 #
 # ⚠️ THINGS THE TEST MUST CONFIRM (may need tweaking afterwards):
 #   - OctoUpdater headless menu sequence (3 / 3 / y / 4) really downloads everything
@@ -37,7 +37,7 @@ script:
   files:
     - updater: https://raw.githubusercontent.com/OctoScripting/OctoUpdater/main/updater.py
     # TODO: replace with the real raw URL once the repo is public
-    - fetch: https://raw.githubusercontent.com/pyrahead-stack/octowow-bazzite/main/lutris/fetch-client.sh
+    - fetch: https://raw.githubusercontent.com/pyrahead-stack/octowow-linux/main/appendix/fetch-client.sh
 
   game:
     exe: $GAMEDIR/VanillaFixes.exe      # fallback if absent: $GAMEDIR/WoW.exe
