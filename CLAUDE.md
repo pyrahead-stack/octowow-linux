@@ -118,6 +118,21 @@ folder). The launcher's own prefix is **`~/Games/octowow-launcher/prefix`**.
   — do not wipe it. NOTE its WoW.exe likely came via headless OctoUpdater (corrupt) — that, not
   the PLAY button, is why PLAY "failed" there; a launcher Install/Verify would fix it.
 
+## Handoff — resuming on the author's own PC (transferred via Warpinator 2026-06-20)
+
+This repo was last worked on the girlfriend's PC (Shari-PC) and copied to the author's
+PC via Warpinator. Personal memory in `~/.claude/...` does NOT travel — everything needed
+is in this file. State at handoff: commit `bb3efe3`, working tree clean. **Next steps:**
+- **Set up the GitHub remote** (`pyrahead-stack/octowow-bazzite`) + push (no remote configured yet).
+- **Author's PC reference install** at `~/Spiele/OctoWoW` (19 GB): its `WoW.exe` likely came via
+  the headless OctoUpdater = the corrupt one → that's why "PLAY failed" there. To get a working
+  setup: point the OctoLauncher at it (or a fresh `~/Games/octowow`) and **Install/Verify** — that
+  restores a clean LAA `WoW.exe`, after which both launcher-PLAY and the Lutris path work.
+- **Test `scripts/add-to-lutris.sh` fresh** — on Shari-PC the Lutris entry was first hand-built,
+  then the script written to match; it hasn't been run from scratch yet.
+- **Steam Deck:** the author plans to run the original Lutris test there and uninstall OctoWoW.
+- Optional: Steam artwork (needs a Steam shortcut first), lutris.net submission.
+
 ## When `/octowowinstall` is invoked
 
 Read this file + `TESTING.md`, figure out whether the user is starting fresh or resuming,
