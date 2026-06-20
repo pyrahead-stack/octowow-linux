@@ -46,13 +46,14 @@ script:
     working_dir: $GAMEDIR
 
   wine:
-    dxvk: true         # Lutris provides DXVK d3d9 (fetch-client.sh removes any bundled one)
+    version: wine-ge-8-26-x86_64   # win32-capable; NOT Proton (Proton can't run a 32-bit prefix)
+    dxvk: false        # the d3d9.dll fetch-client.sh drops in IS the DXVK layer — don't stack a 2nd
     esync: true
     fsync: true
 
   system:
     env:
-      WINEDLLOVERRIDES: mscoree=;mshtml=
+      WINEDLLOVERRIDES: mscoree=;mshtml=;d3d9=n,b
       mesa_glthread: 'true'
 
   installer:
