@@ -130,6 +130,30 @@ folder). The launcher's own prefix is **`~/Games/octowow-launcher/prefix`**.
   crash is gone here; no launcher Install/Verify was needed. (Prefix sits INSIDE the game folder here and
   works fine — the recursion #132 only bites with a `pfx -> .` symlink loop, not a plain prefix dir.)
 
+## Clean-room test on a fresh Linux Mint laptop (2026-06-20, in progress)
+
+First truly-clean, non-Bazzite test — laptop `janosch@Minty`, **Linux Mint 22.3**, kernel 6.17,
+**AMD Renoir APU / RADV** (Vulkan 1.4 fine), reached via SSH (driven by the author's PC). Installed
+fresh from a `git clone` of the public repo. Findings + fixes already pushed:
+- **Guide-bug: "Get the package" step was missing** → README now has a `git clone` / Download-ZIP step.
+- **Guide-bug: non-Bazzite needs umu-launcher** (the only manual prereq) → README "Not on Bazzite?"
+  note with a robust umu **zipapp** one-liner (tar extracts to `umu/umu-run`; copy that to `~/.local/bin`).
+  Mint already had `git/curl/tar/zenity/wine/vulkaninfo`; only `umu-run` was missing.
+- **BIG one — Proton choice decides whether the silent install works:** umu with a forced **GE-Proton**
+  returns from its pressure-vessel container BEFORE the silent OctoLauncher installer finishes → install
+  killed half-done, `OctoLauncher.exe` never appears. umu with **UMU-Proton** (PROTONPATH unset) **WAITS**
+  → install completes (~65 s, proven). So: **leave PROTONPATH unset everywhere → UMU-Proton.** (An earlier
+  "PROTONPATH=GE-Proton" fix was WRONG and was reverted.) setup-launcher.sh also waits for the exe to appear.
+- **First umu run downloads UMU-Proton + the Steam runtime (sniper, ~790 MB).** The very first UMU-Proton
+  fetch can fail transiently ("UMU-Proton not found") — a re-run succeeds (runtime cached). Documented.
+- **Not a guide bug (SSH artifact):** running the GUI install over SSH needs `DISPLAY=:0` +
+  `XAUTHORITY=~/.Xauthority` stolen from the active session (tty7). A normal user runs setup in their
+  own graphical terminal, which already has a display. Detached procs survive (active GUI session present).
+- **State:** Phase 1 done on the laptop — OctoLauncher installed (UMU-Proton-10.0-4), desktop entry made,
+  launcher GUI open (Electron `CrBrowserMain` running). Author now driving the launcher GUI: set folder
+  `~/Games/octowow`, enable vanillaFixes+largeAddress+Apply, Install/Verify (~10 GB client download), then PLAY.
+  **Next:** confirm PLAY → login → world on Mint; then the guide is clean-room-proven for lutris.net.
+
 ## Handoff — resuming on the author's own PC (transferred via Warpinator 2026-06-20)
 
 This repo was last worked on the girlfriend's PC (Shari-PC) and copied to the author's
