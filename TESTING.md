@@ -7,7 +7,7 @@ guess, improvise, or look something up → that's a **guide bug**: write it down
 Environment of this run:
 - Machine / GPU: ____________________
 - Bazzite version (`rpm-ostree status`): ____________________
-- Lutris: native or Flatpak? ____________________
+- Lutris: native or Flatpak? ____________________ (only needed for the HD path)
 - Date: ____________________
 
 ---
@@ -19,44 +19,45 @@ Environment of this run:
 - [ ] You have the `octowow-linux/` package here — how did you get it? ____________________
 
 ### 1. Requirements
-- [ ] Lutris present (`command -v lutris` or Flatpak)
 - [ ] `umu-run` present (`command -v umu-run`)
-- [ ] A **wine-ge-8** build installed in Lutris (Runners → Wine)
-- [ ] GE-Proton present (or accept umu fetching its own)
+- [ ] GE-Proton present (or accept umu fetching its own UMU-Proton)
+- [ ] *(HD path only)* Lutris present + a **wine-ge-8** build installed (Runners → Wine)
 - Notes: ____________________
 
-### 2. Phase 1 — OctoLauncher (setup-launcher.sh)
+### 2. Phase 1 — OctoLauncher setup (setup-launcher.sh)
 - [ ] Ran `scripts/setup-launcher.sh` — did it finish without errors? ____________________
 - [ ] `~/Games/octowow` + `~/Games/octowow-launcher` created, play scripts copied in
 - [ ] OctoLauncher silently installed (`.../OctoLauncher/OctoLauncher.exe` exists)
 - [ ] **OctoLauncher** desktop icon appeared and opens the launcher
-- Notes (this is the one new untested piece — watch it): ____________________
+- Notes: ____________________
 
 ### 3. Phase 1 — download + tweaks in the launcher
 - [ ] Launcher opened, GUI renders
-- [ ] Set game folder to `~/Games/octowow`
-- [ ] Enabled **vanillaFixes** + **largeAddress**, applied
+- [ ] Set game folder to `~/Games/octowow` — was the **right-pane folder picker** tip clear? ____________________
+- [ ] Enabled **vanillaFixes** + **largeAddress**, pressed **Apply** (was Apply-vs-Install clear?) ____________________
 - [ ] Install/Verify → client downloaded (~9–10 GB). Size on disk: ____________________
 - [ ] `WoW.exe`, `VanillaFixes.exe`, `d3d9.dll` present in `~/Games/octowow`
-- [ ] Did NOT press the launcher's PLAY. Closed it.
 - Notes: ____________________
 
-### 4. Phase 2 — Lutris + play
-- [ ] Lutris → + → Install from a local install script → `octowow.yml`
-- [ ] Install location was already `~/Games/octowow` (no manual change needed?)  ____________________
-- [ ] "folder contains files" warning — did the README prepare you for it? ____________________
-- [ ] Play → the **🎮 Play / 🔧 OctoLauncher chooser** appeared
-- [ ] 🎮 Play → game window opens, reaches the **login screen**
+### 4. Phase 2 — Play (the main way: launcher PLAY)
+- [ ] Pressed **PLAY** in the OctoLauncher
+- [ ] Game window opens, reaches the **login screen** (no #132 crash)
 - Notes: ____________________
 
 ### 5. Login → world
-- [ ] Logged in (uppercase account) → realm list **C'Thun / N'Zoth**
+- [ ] Logged in (account name **UPPERCASE**) → realm list **C'Thun / N'Zoth**
 - [ ] Entered the world, moved around, smooth (no green screen, DXVK working)
 - Notes: ____________________
 
-### 6. (optional)
+### 6. (optional) HD via Lutris
+> Only if you use the HD patches — they need the Lutris path (the launcher's PLAY rewrites `patch-A`).
+- [ ] Closed Lutris, ran `scripts/add-to-lutris.sh` — finished without errors? ____________________
+- [ ] Lutris → **OctoWoW** → **Play** → the **🎮 Play / 🔧 OctoLauncher** chooser appeared
+- [ ] 🎮 Play → game reaches login → world (HD models load, no character-screen crash)
+- Notes: ____________________
+
+### 7. (optional) extras
 - [ ] Artwork (`install-artwork.sh`) — icon/banner/cover show in Lutris
-- [ ] HD patches — was the patch-A note clear?
 - [ ] Steam shortcut + `--steam` artwork
 
 ---

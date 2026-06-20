@@ -115,9 +115,13 @@ folder). The launcher's own prefix is **`~/Games/octowow-launcher/prefix`**.
     paths (Lutris must be closed). README Phase 2 now uses it; `octowow.yml` kept only as legacy.
 - **DONE 2026-06-20:** (c) public repo created + pushed → **https://github.com/pyrahead-stack/octowow-linux**
   (`main` branch, SSH remote `git@github.com:pyrahead-stack/octowow-linux.git`).
-- **Still not done:** (d) lutris.net submission; test `add-to-lutris.sh` itself on a clean machine (on Shari-PC the
-  Lutris entry was first hand-built, then the script written to match — script not yet run fresh);
-  re-test the whole flow on a truly clean machine (this run reused existing data).
+- **`add-to-lutris.sh` VALIDATED 2026-06-20** (sandbox run under a fake `HOME` with a real-schema empty
+  pga.db, on the author's PC): writes a correct config yml (abs paths, slug `octowow-community`) + pga.db
+  row (runner=linux, platform=Linux, directory/executable/configpath set, installed=1); **idempotent**
+  (2nd run UPDATEs the same id, no dup); fails cleanly if the chooser is missing/non-exec. No script change
+  needed. (Real Lutris left untouched; tested in isolation, not launched via Lutris.)
+- **Still not done:** (d) lutris.net submission; re-test the whole launcher→PLAY flow on a truly CLEAN
+  machine (the Shari-PC + author-PC runs both reused existing data / pre-existing installs).
 - The author's own PC has a reference install at `~/Spiele/OctoWoW` (19 GB) + `~/Spiele/OctoLauncher`
   — do not wipe it. **VERIFIED WORKING 2026-06-20:** its `WoW.exe` is already a CLEAN LAA exe
   (4 907 008 B, LAA on; the corrupt headless one is safely kept as `WoW.exe.octopatched.bak`,

@@ -1,10 +1,17 @@
 # OctoWoW — Lutris install script (community package)
 # Works on Bazzite / Fedora Atomic (native OR Flatpak Lutris) and Steam Deck.
 #
+# LEGACY / HD path only. The main way to play is the OctoLauncher's PLAY button
+# (see README). This file just registers the game in Lutris for HD users (who
+# must play without the launcher). Prefer scripts/add-to-lutris.sh — it writes
+# the entry reliably; this GUI flow is kept only as a fallback and is unreliable
+# (a runner:linux script with no files: section can leave $GAMEDIR unset, so Play
+# fails with "$GAMEDIR/$GAMEDIR/octowow-chooser.sh not found").
+#
 # Prerequisite: run scripts/setup-launcher.sh first, then download the client
 # via the OctoLauncher into ~/Games/octowow (see README).
 #
-# How to use:
+# How to use (fallback):
 #   Lutris -> "+" -> "Install from a local install script" -> select this file.
 #   Keep the suggested install location (~/Games/octowow) — that's where the
 #   client and the play scripts already are.

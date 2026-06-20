@@ -5,8 +5,8 @@
 #  - downloads and silently installs the official OctoLauncher into its own prefix
 #  - creates a desktop entry for the launcher
 # After this: open the OctoLauncher, point it at ~/Games/octowow, enable the
-# tweaks you want, and let it download/verify the client. Then add the game to
-# Lutris with octowow.yml and press Play.
+# tweaks you want, let it download/verify the client, then press the launcher's
+# PLAY button to play. (HD users play via Lutris instead — see the README.)
 set -euo pipefail
 
 PKG="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"   # this scripts/ folder
@@ -61,8 +61,12 @@ Next steps:
   1. Open "OctoLauncher" (desktop entry) or run:
        $LDIR/start-octolauncher.sh
   2. In the launcher set the game folder to:  $GAMEDIR
-     Enable the tweaks you want (vanillaFixes, largeAddress), then Install/Verify
-     to download the client. Do NOT press the launcher's PLAY button.
-  3. Add the game to Lutris: + -> "Install from a local install script" ->
-     octowow.yml (location = $GAMEDIR). Then press Play.
+     Enable the tweaks you want (vanillaFixes, largeAddress), press Apply, then
+     Install/Verify to download the client.
+  3. Press the launcher's PLAY button to play. Account name is UPPERCASE.
+
+  Using the HD patches? Don't play via the launcher (it rewrites patch-A and
+  clobbers HD). Register the game in Lutris and play from there instead:
+       (close Lutris first)   $PKG/add-to-lutris.sh
+     then Lutris -> OctoWoW -> Play -> 🎮 Play OctoWoW.
 EOF

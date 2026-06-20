@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Play OctoWoW — launches VanillaFixes.exe (the multicore chainloader) under
 # wine-ge in a 32-bit prefix, with DXVK. This is the file Lutris "Play" runs
-# (via octowow-chooser.sh). The OctoLauncher's own PLAY button is NOT used
-# (its DLL injection fails under Wine -> ERROR #132).
+# (via octowow-chooser.sh). This Lutris path is for HD users: it never opens the
+# OctoLauncher, so the launcher's per-update patch-A rewrite can't clobber HD.
+# (Non-HD players can just use the launcher's PLAY button instead — see README.)
 #
 # Place this script INSIDE the game folder, next to WoW.exe / VanillaFixes.exe.
 set -euo pipefail

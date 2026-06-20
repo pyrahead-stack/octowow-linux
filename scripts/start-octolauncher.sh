@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 # Start the official OctoLauncher (Electron) under Proton via umu.
 # Use it to download the client and to enable/apply tweaks (vanillaFixes,
-# largeAddress) and HD patches. Do NOT use the launcher's own PLAY button
-# (its DLL injection fails under Proton) — play the game from Lutris instead.
+# largeAddress) and HD patches. Its PLAY button works once the client is
+# installed cleanly (the old "injection fails under Proton" was a misdiagnosis
+# of a corrupt WoW.exe). Exception: HD users play via Lutris — opening the
+# launcher rewrites patch-A and clobbers the HD patch-A.
 #
 # Place this script in the launcher folder, next to its "prefix".
 set -euo pipefail
