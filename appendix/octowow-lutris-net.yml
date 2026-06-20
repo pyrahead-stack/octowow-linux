@@ -2,7 +2,7 @@
 # ===========================================================================
 # This is the installer that makes the "+ -> search 'OctoWoW' -> Install" flow
 # work in Lutris (like Phantasy Star Online BB). Unlike the LOCAL script
-# (octowow-bazzite.yml), the user starts with NOTHING, so this installer
+# (octowow.yml), the user starts with NOTHING, so this installer
 # downloads the client itself via the OctoUpdater.
 #
 # HOW TO SUBMIT (after the clean-room test confirms the download works):

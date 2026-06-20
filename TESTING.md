@@ -1,73 +1,70 @@
-# Clean-room test — OctoWoW on Bazzite
+# Clean-room test — OctoWoW on Linux (launcher flow)
 
-Goal: prove the **written guide alone** gets a brand-new person from "nothing" to "playing OctoWoW".
-Rule of the test: **only do what `README.md` says.** No insider knowledge, no shortcuts you remember.
-Whenever you have to guess, improvise, or look something up — that's a **bug in the guide**: write it down.
+Goal: prove the **README alone** gets a brand-new person from "nothing" to "playing".
+Rule: **only do what `README.md` says.** No insider knowledge. Every time you have to
+guess, improvise, or look something up → that's a **guide bug**: write it down below.
 
 Environment of this run:
 - Machine / GPU: ____________________
-- Bazzite version (`rpm-ostree status` or About): ____________________
+- Bazzite version (`rpm-ostree status`): ____________________
 - Lutris: native or Flatpak? ____________________
 - Date: ____________________
 
 ---
 
-## How to capture problems
-For every hiccup, note: **which step**, **what you expected**, **what happened** (incl. exact error text).
-Keep a terminal open; if a command fails, copy the full output.
+## Checklist
 
----
+### 0. Start
+- [ ] Fresh machine, no OctoWoW / leftover folders (`~/Games/octowow*`, `~/Spiele/OctoWoW`)
+- [ ] You have the `octowow-bazzite/` package here — how did you get it? ____________________
 
-## Checklist (tick as you go)
-
-### 0. Starting point
-- [ ] Fresh/clean machine, no OctoWoW or leftover folders
-- [ ] You have the package folder (`octowow-bazzite/`) on this machine — note **how you got it here**: ____________________
-
-### 1. Preparation — Lutris
-- [ ] Followed "PREPARATION — install Lutris" exactly
-- [ ] `command -v lutris` OR Flatpak present
+### 1. Requirements
+- [ ] Lutris present (`command -v lutris` or Flatpak)
+- [ ] `umu-run` present (`command -v umu-run`)
+- [ ] A **wine-ge-8** build installed in Lutris (Runners → Wine)
+- [ ] GE-Proton present (or accept umu fetching its own)
 - Notes: ____________________
 
-### 2. Run the installer (the one terminal command)
-- [ ] Ran `~/octowow-bazzite/install-octowow-headless.sh` (adjust path if the folder is elsewhere)
-- [ ] **Client download actually completed** (this is the experimental part — watch it!)
-      - Download path used: ____________________
-      - Size on disk afterwards (`du -sh <gamefolder>`): __________
-- [ ] realmlist written
-- [ ] Lutris installer opened automatically at the end
-- If the download got stuck → did the `WITH_LAUNCHER=1` fallback work? ____________________
+### 2. Phase 1 — OctoLauncher (setup-launcher.sh)
+- [ ] Ran `scripts/setup-launcher.sh` — did it finish without errors? ____________________
+- [ ] `~/Games/octowow` + `~/Games/octowow-launcher` created, play scripts copied in
+- [ ] OctoLauncher silently installed (`.../OctoLauncher/OctoLauncher.exe` exists)
+- [ ] **OctoLauncher** desktop icon appeared and opens the launcher
+- Notes (this is the one new untested piece — watch it): ____________________
+
+### 3. Phase 1 — download + tweaks in the launcher
+- [ ] Launcher opened, GUI renders
+- [ ] Set game folder to `~/Games/octowow`
+- [ ] Enabled **vanillaFixes** + **largeAddress**, applied
+- [ ] Install/Verify → client downloaded (~9–10 GB). Size on disk: ____________________
+- [ ] `WoW.exe`, `VanillaFixes.exe`, `d3d9.dll` present in `~/Games/octowow`
+- [ ] Did NOT press the launcher's PLAY. Closed it.
 - Notes: ____________________
 
-### 3. Lutris install + first launch
-- [ ] Clicked **Install** once in Lutris
-- [ ] Pointed it at the existing game folder (if asked)
-- [ ] OctoWoW appears in Lutris with **icon/banner/cover** (artwork step worked)
-- [ ] Clicked **Play** → game window opens
-- [ ] Reached the **login screen** (OctoWoW "Mysteries of Azeroth")
+### 4. Phase 2 — Lutris + play
+- [ ] Lutris → + → Install from a local install script → `octowow.yml`
+- [ ] Install location was already `~/Games/octowow` (no manual change needed?)  ____________________
+- [ ] "folder contains files" warning — did the README prepare you for it? ____________________
+- [ ] Play → the **🎮 Play / 🔧 OctoLauncher chooser** appeared
+- [ ] 🎮 Play → game window opens, reaches the **login screen**
 - Notes: ____________________
 
-### 4. Login → world
-- [ ] Logged in (test account) → realm list shows **C'Thun / N'Zoth**
-- [ ] Entered the world, moved around, looks smooth (DXVK working, no green screen)
+### 5. Login → world
+- [ ] Logged in (uppercase account) → realm list **C'Thun / N'Zoth**
+- [ ] Entered the world, moved around, smooth (no green screen, DXVK working)
 - Notes: ____________________
 
-### 5. (optional) Steam integration
-- [ ] Created a Steam shortcut (Lutris right-click → "Create Steam shortcut")
-- [ ] Closed Steam, ran `./install-artwork.sh --steam`, restarted Steam
-- [ ] Steam library page shows poster + hero + logo
-- Notes: ____________________
-
-### 6. (optional) AIO / HD patches
-- [ ] Step 2 (AIO) — was the manual link easy to find from the README? ____________________
-- [ ] Step 5 (HD) — clear enough? ____________________
+### 6. (optional)
+- [ ] Artwork (`install-artwork.sh`) — icon/banner/cover show in Lutris
+- [ ] HD patches — was the patch-A note clear?
+- [ ] Steam shortcut + `--steam` artwork
 
 ---
 
 ## Verdict
-- Did the **written guide alone** get you to "playing"?  ☐ yes  ☐ no
+- Did the **README alone** get you to "playing"?  ☐ yes  ☐ no
 - Worst friction point: ____________________
-- Anything missing / unclear / wrong in the README: ____________________
-- Anything that needed a second try or a guess: ____________________
+- Anything missing / unclear / wrong: ____________________
+- Anything that needed a guess or a second try: ____________________
 
-> After the test, bring this filled-in file back — we fix every noted point **before** publishing.
+> Bring this filled-in file back — we fix every noted point before publishing.

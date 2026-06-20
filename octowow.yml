@@ -1,0 +1,47 @@
+# OctoWoW — Lutris install script (community package)
+# Works on Bazzite / Fedora Atomic (native OR Flatpak Lutris) and Steam Deck.
+#
+# Prerequisite: run scripts/setup-launcher.sh first, then download the client
+# via the OctoLauncher into ~/Games/octowow (see README).
+#
+# How to use:
+#   Lutris -> "+" -> "Install from a local install script" -> select this file.
+#   Keep the suggested install location (~/Games/octowow) — that's where the
+#   client and the play scripts already are.
+#
+# Why runner: linux (a script), not runner: wine?
+#   The play script (octowow-chooser.sh -> play-octowow.sh) finds a wine-ge build
+#   itself and launches VanillaFixes.exe in a 32-bit prefix with DXVK. This avoids
+#   the "Proton is not compatible with 32-bit prefixes" wall you hit when Lutris
+#   defaults to GE-Proton, and it gives you a Play / OctoLauncher chooser on Play.
+#
+# Pitfalls baked into the scripts (FYI):
+#   - The Wine prefix lives NEXT TO the game folder (~/Games/octowow-prefix), never
+#     inside it — a prefix inside can trigger ERROR #132 (recursive folder scan).
+#   - Play launches VanillaFixes.exe, not the launcher's PLAY button.
+#   - DXVK comes from the d3d9.dll in the game folder (override d3d9=n,b).
+#   - realmlist = 185.165.170.6 (octowow.st). The old .33 is wrong.
+
+name: OctoWoW
+game_slug: octowow
+version: Community
+slug: octowow-community
+runner: linux
+
+script:
+  game:
+    exe: $GAMEDIR/octowow-chooser.sh
+    working_dir: $GAMEDIR
+
+  installer:
+    # Make sure the play scripts are runnable (in case they were copied flat).
+    - execute:
+        command: chmod
+        args: +x $GAMEDIR/octowow-chooser.sh $GAMEDIR/play-octowow.sh
+
+    # The OctoLauncher normally writes this; we set it too, just in case.
+    - write_file:
+        file: $GAMEDIR/realmlist.wtf
+        content: |
+          set realmlist 185.165.170.6
+          set patchlist 185.165.170.6
