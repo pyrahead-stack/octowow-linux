@@ -1,6 +1,6 @@
 # OctoWoW on Linux
 
-Install **OctoWoW** (Mysteries of Azeroth, WoW 1.12) on **Bazzite / Fedora Atomic** and the **Steam Deck**.
+Install **OctoWoW** (Mysteries of Azeroth, WoW 1.12) on **Linux** — **Bazzite / Fedora Atomic**, the **Steam Deck**, or any distro (Linux Mint, Ubuntu, …; see [Requirements](#requirements-once)).
 The official **OctoLauncher** downloads the client, applies the tweaks, and **runs the game** — its PLAY button is all you need.
 
 > Everything lives in **`~/Games/octowow`** (the folder Lutris suggests by default — don't change it).
@@ -23,10 +23,14 @@ The official **OctoLauncher** downloads the client, applies the tweaks, and **ru
 
 | Need | How |
 |---|---|
-| **umu-launcher** | Runs the launcher **and its PLAY**. Preinstalled on Bazzite. Steam Deck: see the Deck note below. |
-| **GE-Proton** *(for the launcher)* | Install via **ProtonUp-Qt**, or let umu fetch its own UMU-Proton on first run. |
+| **umu-launcher** | Runs the launcher **and its PLAY**. Preinstalled on Bazzite. Not on Bazzite? See below. |
+| **GE-Proton** *(optional)* | Only if you have it (e.g. via Steam/ProtonUp-Qt) — otherwise umu fetches its own UMU-Proton on first run, which works fine. |
 | **Lutris + wine-ge** *(HD path only)* | Only if you use the HD patches. Lutris is preinstalled on Bazzite (else `flatpak install -y flathub net.lutris.Lutris`); then Lutris → **Runners → Wine** → install a **wine-ge-8** build. **Not** Proton — Proton can't run WoW's 32-bit prefix. |
-| `kdialog` or `zenity` *(HD/Lutris only)* | For the Play/Launcher chooser menu. Preinstalled on KDE (kdialog). |
+| `kdialog` or `zenity` *(HD/Lutris only)* | For the Play/Launcher chooser menu. Preinstalled on KDE (kdialog); on Mint/Ubuntu `sudo apt install zenity`. |
+
+> **Not on Bazzite? (Linux Mint, Ubuntu, other)** — These don't ship `umu-run`. The **vanilla play path needs only umu-launcher**:
+> 1. Grab the **`umu-launcher` zipapp** from its [GitHub releases](https://github.com/Open-Wine-Components/umu-launcher/releases), extract `umu-run` to `~/.local/bin/`, `chmod +x` it. Make sure `~/.local/bin` is on your `PATH` (log out/in, or `export PATH="$HOME/.local/bin:$PATH"`).
+> 2. That's it for vanilla — umu fetches its own Proton on first run. **For HD only:** also install **Lutris** (`flatpak install -y flathub net.lutris.Lutris`) and a **wine-ge-8** build (via **ProtonUp-Qt**: `flatpak install -y flathub net.davidotek.pupgui2`). (Enable Flathub first if needed: `flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo`.)
 
 ---
 

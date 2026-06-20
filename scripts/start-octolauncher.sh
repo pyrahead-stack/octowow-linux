@@ -27,11 +27,13 @@ find_proton() {
   done
   return 1
 }
+# Prefer a GE-Proton if one is installed; otherwise leave PROTONPATH unset so umu
+# fetches its own UMU-Proton, which runs the launcher fine (proven in testing).
+# This is what lets a fresh non-Steam machine (e.g. Linux Mint) work with just umu.
 export PROTONPATH="${PROTONPATH:-$(find_proton || true)}"
 if [ -z "${PROTONPATH:-}" ]; then
-  echo "No GE-Proton found. Install GE-Proton (e.g. via ProtonUp-Qt) and retry," >&2
-  echo "or set PROTONPATH=/path/to/GE-Proton before launching." >&2
-  exit 1
+  echo "No GE-Proton found — letting umu fetch its own UMU-Proton (first run may take a minute)." >&2
+  unset PROTONPATH
 fi
 
 LAUNCHER="$WINEPREFIX/drive_c/users/steamuser/AppData/Local/Programs/OctoLauncher/OctoLauncher.exe"
