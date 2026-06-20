@@ -110,8 +110,9 @@ folder). The launcher's own prefix is **`~/Games/octowow-launcher/prefix`**.
     `$GAMEDIR` stayed literal and Play failed (`$GAMEDIR/$GAMEDIR/octowow-chooser.sh not found`).
     **Fix: new `scripts/add-to-lutris.sh`** writes the config + pga.db row directly with absolute
     paths (Lutris must be closed). README Phase 2 now uses it; `octowow.yml` kept only as legacy.
-- **Still not done:** (c) git commit + public push (repo target: `pyrahead-stack/octowow-linux`);
-  (d) lutris.net submission; test `add-to-lutris.sh` itself on a clean machine (on Shari-PC the
+- **DONE 2026-06-20:** (c) public repo created + pushed → **https://github.com/pyrahead-stack/octowow-linux**
+  (`main` branch, SSH remote `git@github.com:pyrahead-stack/octowow-linux.git`).
+- **Still not done:** (d) lutris.net submission; test `add-to-lutris.sh` itself on a clean machine (on Shari-PC the
   Lutris entry was first hand-built, then the script written to match — script not yet run fresh);
   re-test the whole flow on a truly clean machine (this run reused existing data).
 - The author's own PC has a reference install at `~/Spiele/OctoWoW` (19 GB) + `~/Spiele/OctoLauncher`
@@ -123,7 +124,7 @@ folder). The launcher's own prefix is **`~/Games/octowow-launcher/prefix`**.
 This repo was last worked on the girlfriend's PC (Shari-PC) and copied to the author's
 PC via Warpinator. Personal memory in `~/.claude/...` does NOT travel — everything needed
 is in this file. State at handoff: commit `bb3efe3`, working tree clean. **Next steps:**
-- **Set up the GitHub remote** (`pyrahead-stack/octowow-linux`) + push (no remote configured yet).
+- ✅ **DONE 2026-06-20:** GitHub remote set up + pushed → https://github.com/pyrahead-stack/octowow-linux (`main`).
 - **Author's PC reference install** at `~/Spiele/OctoWoW` (19 GB): its `WoW.exe` likely came via
   the headless OctoUpdater = the corrupt one → that's why "PLAY failed" there. To get a working
   setup: point the OctoLauncher at it (or a fresh `~/Games/octowow`) and **Install/Verify** — that
